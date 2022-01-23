@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { View, StyleSheet, Text, ScrollView, TouchableOpacity } from 'react-native';
+import { Image, View, StyleSheet, Text, ScrollView, TouchableOpacity } from 'react-native';
 import colors from '../assets/colors'
 import YoutubePlayer from "react-native-youtube-iframe";
 import VideoMaker from '../components/VideoMaker';
@@ -13,7 +13,9 @@ const HomeScreen = ({ navigation }) => {
 
     const user = useSelector(state => state.login);
     const videosYoutube = useSelector(state => state.video);
+    console.log(videosYoutube)
     const video = videosYoutube.data.items;
+    console.log(video)
 
     useEffect(() => {
         dispatch(fetchData())
@@ -36,6 +38,7 @@ const HomeScreen = ({ navigation }) => {
             )}
             <View>
 
+
                 {video?.map((item, index) => (
                     <TouchableOpacity
                         key={index}
@@ -48,6 +51,11 @@ const HomeScreen = ({ navigation }) => {
                             width={300}
                             videoId={item.id.videoId}
                         /> */}
+                        <Image
+                            source={{ uri: `https://i.ytimg.com/vi/${item.id.videoId}/default.jpg` }}
+                            style={{ height: 90, resizeMode: 'contain', margin: 5 }}
+                        />
+
                         <Text style={styles.videoDescription}>{item.snippet.description}</Text>
                     </TouchableOpacity>
                 ))

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, TextInput, TouchableOpacity } from 'react-native';
+import { StyleSheet, Button, Text, View, TextInput, TouchableOpacity } from 'react-native';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { useDispatch, useSelector } from 'react-redux';
 import colors from '../assets/colors'
 import { login, logout } from '../store/action/LoginActions';
@@ -19,8 +20,12 @@ const ProfileScreen = ({ navigation }) => {
     })
 
     const loginHandler = (details) => {
-        dispatch(login(details))
-        navigation.navigate('Verifarma')
+        if (details.password !== undefined) {
+            dispatch(login(details))
+            navigation.navigate('Verifarma')
+        } else {
+            console.log('Completar Formulario')
+        }
     }
 
     const logoutHandler = () => {
@@ -29,7 +34,7 @@ const ProfileScreen = ({ navigation }) => {
 
     return (
 
-        <View style={styles.profileContainer}>
+        <View style={styles.loginContainer}>
 
             {(user.active !== false ?
 
@@ -40,9 +45,8 @@ const ProfileScreen = ({ navigation }) => {
                     <Text style={styles.textButton}>Cerrar Sesión</Text>
                 </TouchableOpacity> :
 
-                <>
+                <KeyboardAwareScrollView contentContainerStyle={{ marginTop: 20 }}>
                     <Text style={styles.loginTitle}>Login</Text>
-
                     <TextInput
                         style={styles.input}
                         onChangeText={text => setDetails({ ...details, name: text })}
@@ -94,10 +98,11 @@ const ProfileScreen = ({ navigation }) => {
                     >
                         <Text style={styles.textButton}>Iniciar Sesión</Text>
                     </TouchableOpacity>
-                </>
+                </KeyboardAwareScrollView>
 
             )}
-        </View>
+
+        </View >
 
 
     );
@@ -106,16 +111,15 @@ const ProfileScreen = ({ navigation }) => {
 export default ProfileScreen;
 
 const styles = StyleSheet.create({
-    profileContainer: {
+    loginContainer: {
         flex: 1,
         justifyContent: 'center',
-        // alignItems: 'center',
     },
     loginTitle: {
         fontWeight: 'bold',
         alignSelf: 'center',
         fontSize: 20,
-        marginBottom: 20,
+        marginVertical: 20,
     },
     input: {
         // height: 40,

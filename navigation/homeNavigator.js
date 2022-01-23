@@ -9,7 +9,10 @@ const Stack = createNativeStackNavigator();
 
 const homeNavigator = () => {
     return (
-        <Stack.Navigator>
+        <Stack.Navigator
+            screenOptions={{
+                headerTitleAlign: 'center',
+            }}>
             <Stack.Screen name="Verifarma" component={HomeScreen} />
             <Stack.Screen name="Video" component={VideoScreen} />
         </Stack.Navigator>
