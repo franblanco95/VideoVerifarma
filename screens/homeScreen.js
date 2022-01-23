@@ -1,15 +1,23 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { View, StyleSheet, Text, ScrollView, TouchableOpacity } from 'react-native';
-import videos from '../constants/videos'
-import YoutubePlayer from "react-native-youtube-iframe";
 import colors from '../assets/colors'
-import { useSelector } from 'react-redux';
+import YoutubePlayer from "react-native-youtube-iframe";
 import VideoMaker from '../components/VideoMaker';
+import { fetchData } from '../store/action/YoutubeActions';
+
 
 const HomeScreen = ({ navigation }) => {
 
-    const user = useSelector(state => state.login)
-    console.log(user)
+    const dispatch = useDispatch()
+
+    const user = useSelector(state => state.login);
+    const videosYoutube = useSelector(state => state.video);
+    const video = videosYoutube.data.items;
+
+    useEffect(() => {
+        dispatch(fetchData())
+    }, [])
 
     return (
         <ScrollView contentContainerStyle={styles.homeContainer}>
@@ -28,19 +36,19 @@ const HomeScreen = ({ navigation }) => {
             )}
             <View>
 
-                {videos.map((item, index) => (
+                {video?.map((item, index) => (
                     <TouchableOpacity
                         key={index}
                         style={styles.videoContainer}
-                        onPress={() => navigation.navigate('Video')}
+                        onPress={() => navigation.navigate('Video', { item })}
                     >
-                        <Text style={styles.videoTitle}>{item.title}</Text>
-                        <YoutubePlayer
+                        <Text style={styles.videoTitle}>{item.snippet.title}</Text>
+                        {/* <YoutubePlayer
                             height={170}
                             width={300}
-                            videoId={item.url}
-                        />
-                        <Text style={styles.videoDescription}>{item.description}</Text>
+                            videoId={item.id.videoId}
+                        /> */}
+                        <Text style={styles.videoDescription}>{item.snippet.description}</Text>
                     </TouchableOpacity>
                 ))
                 }
