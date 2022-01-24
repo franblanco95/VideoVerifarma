@@ -5,6 +5,7 @@ import colors from '../assets/colors'
 import YoutubePlayer from "react-native-youtube-iframe";
 import VideoMaker from '../components/VideoMaker';
 import { fetchData } from '../store/action/YoutubeActions';
+import { initAuthentication } from '../store/action/LoginActions';
 
 
 const HomeScreen = ({ navigation }) => {
@@ -13,12 +14,11 @@ const HomeScreen = ({ navigation }) => {
 
     const user = useSelector(state => state.login);
     const videosYoutube = useSelector(state => state.video);
-    console.log(videosYoutube)
     const video = videosYoutube.data.items;
-    console.log(video)
 
     useEffect(() => {
         dispatch(fetchData())
+        dispatch(initAuthentication())
     }, [])
 
     return (
