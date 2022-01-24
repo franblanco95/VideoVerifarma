@@ -17,5 +17,5 @@ export const fetchData = () => {
 
 export const addVideo = (newVideo) => ({
     type: ADD_VIDEO,
-    ...newVideo
+    newVideo
 })

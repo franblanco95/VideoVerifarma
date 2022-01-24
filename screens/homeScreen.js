@@ -7,14 +7,14 @@ import VideoMaker from '../components/VideoMaker';
 import { fetchData } from '../store/action/YoutubeActions';
 import { initAuthentication } from '../store/action/LoginActions';
 
-
 const HomeScreen = ({ navigation }) => {
 
     const dispatch = useDispatch()
 
     const user = useSelector(state => state.login);
-    const videosYoutube = useSelector(state => state.video);
-    const video = videosYoutube.data.items;
+    const videosYoutube = useSelector(state => state.video.data);
+    const videosNuevos = useSelector(state => state.video.newData);
+    const video = videosYoutube.items;
 
     useEffect(() => {
         dispatch(fetchData())
@@ -37,6 +37,21 @@ const HomeScreen = ({ navigation }) => {
 
             )}
             <View>
+                {videosNuevos?.map((item, index) => (
+                    <TouchableOpacity
+                        key={index}
+                        style={styles.videoContainer}
+                        onPress={() => navigation.navigate('Video', { item })}
+                    >
+                        <Text style={styles.videoTitle}>{item.title}</Text>
+                        {/* <YoutubePlayer
+                                height={170}
+                                width={300}
+                                videoId={item.id}
+                            /> */}
+                        <Text style={styles.videoDescription}>{item.description}</Text>
+                    </TouchableOpacity>
+                ))}
 
 
                 {video?.map((item, index) => (
@@ -51,11 +66,6 @@ const HomeScreen = ({ navigation }) => {
                             width={300}
                             videoId={item.id.videoId}
                         /> */}
-                        <Image
-                            source={{ uri: `https://i.ytimg.com/vi/${item.id.videoId}/default.jpg` }}
-                            style={{ height: 90, resizeMode: 'contain', margin: 5 }}
-                        />
-
                         <Text style={styles.videoDescription}>{item.snippet.description}</Text>
                     </TouchableOpacity>
                 ))
